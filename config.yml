@@ -1,10 +1,13 @@
 title: "RubyGeeks"
 url: "http://rubygeeks.com"
-author: "Senthil Nayagam"
-email: "senthil@rubygeeks.com"
+author: "Magesh"
+email: "magesh@rubygeeks.com"
+
 description: "meeting point for rubygeeks"
 
 destination: ./Book
+
+chapters: 10
 
 permalink: /:year/:month/:title
 
