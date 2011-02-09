@@ -1,0 +1,45 @@
+#!/usr/bin/ruby
+require 'rubygems'
+require 'fileutils'
+require 'maruku'
+
+
+def scan_file(file_name)
+    if File.ftype(file_name) == 'file'
+      puts file_name
+  elsif File.ftype(file_name) == 'directory'
+      Dir[file_name + "/*"].each { |f| scan_file(f) }
+  end
+end
+
+def file_write(filepath,content)
+    File.open(filepath, 'w') {|f| f.write(content) }
+end
+
+def convert
+
+    #files = {}
+    #files = scan_file(ARGV.first)
+    files = scan_file('input')
+    # puts files
+    size = files.length
+    
+    files.each do |f|  
+        
+  #FileUtils.cp(f, 'test')
+        file = File.open(f, 'r')
+        file_content = file.readlines
+        FileUtils.touch "output/#{size}magesh.html"
+        html_content = Maruku.new(file_content.to_s).to_html
+        file_write("output/#{size}magesh.html", html_content)
+        size = size - 1
+    end  
+end
+
+input = ARGV.first.to_s
+
+if input == "create_book"
+    convert
+else
+    puts "Please use a proper command \n create_book -- To create a html book"
+end

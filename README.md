@@ -1,25 +1,17 @@
-bookbuilder
------------
+# Book Building Engine  
 
+A Ruby based Book Building Engine, that helps you create book at ease. In any formats that you prefer, it can be html book, pdf, epub, mobi or any other portable formats as well.  
 
-## Commands ##
+# Commands
 
- create book
-- create cover
-- create acknowledgement
-- create TOC
-- create chapters
-- create index
-- create bibliography
-- create page_layouts
+    start - to start writing the book in Markdown format
+    
+    html_book - to create the book in html format
+    
+    pdf_book - to create the book in pdf format
+    
+    
+    
+# TODO
 
-
-Directory Structure
--------------------
-
-- book/
-- book/layouts
-- TOC.markdown
-- chapters/1.markdown
-- config.yaml
-- output_templates/pdf, epub, html
+We will be changing the directory structure and add more features
