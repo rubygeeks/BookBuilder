@@ -2,7 +2,7 @@
 require 'rubygems'
 require 'fileutils'
 require 'maruku'
-
+require 'erb'
 
 def scan_file(file_name)
     if File.ftype(file_name) == 'file'
@@ -13,27 +13,47 @@ def scan_file(file_name)
 
 end
 
+def file_read(filepath)
+  f = File.open(filepath, 'r')
+  f.readlines.join("")
+end
+
 def file_write(filepath,content)
     File.open(filepath, 'w') {|f| f.write(content) }
 end
 
 def convert_html
+  
+  files = scan_file('input')
+  
+  files.each do |f|  
+    pattern = /.*\/(.*)\.(.*)/
+    filename = f.match(pattern)[1] + ".html"
     
-    files = scan_file('input')
+    file = File.open(f, 'r')
+    file_content = file.readlines
     
-    files.each do |f|  
-        pattern = /.*\/(.*)\.(.*)/
-        filename = f.match(pattern)[1] + ".html"
-       
-        file = File.open(f, 'r')
-        file_content = file.readlines
-        
-            FileUtils.touch "output/" + filename
-            html_content = Maruku.new(file_content.to_s).to_html
-            file_write("output/" + filename, html_content)
-            puts "created chapter #{f}"
-        
-    end  
+    FileUtils.touch "output/" + filename
+    html_content = Maruku.new(file_content.to_s).to_html
+    page_template = file_read('layouts/chapter.html')
+    content = page_template.gsub("{content}",html_content)
+    template = ERB.new(content)
+    content = template.result(binding)
+    
+    file_write("output/" + filename, content)
+    puts "created chapter #{f}"
+    
+    if filename != "index.html"
+      num = filename.match(/([0-9]+)/)
+      num = num[1].to_i
+      prevChapter = "chapter-#{num-1}"
+      nextChapter = "chapter-#{num+1}"
+      puts prevChapter 
+      puts nextChapter
+      
+    end
+    
+  end  
 end
 
 def create_markdown
